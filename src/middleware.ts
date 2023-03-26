@@ -2,29 +2,27 @@ import { getAuth, withClerkMiddleware } from "@clerk/nextjs/server";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-const publicPaths = ["/", "/user/((?!me).*)", "/sign-in*", "/sign-up*"];
+const privatePaths = ["/user/me", "/account/*"];
 
-const isPublic = (path: string) => {
-  return publicPaths.find((x) =>
+const isPrivate = (path: string) => {
+  return privatePaths.find((x) =>
     path.match(new RegExp(`^${x}$`.replace("*$", "($|/)")))
   );
 };
 
 export default withClerkMiddleware((req: NextRequest) => {
-  if (isPublic(req.nextUrl.pathname)) {
+  if (isPrivate(req.nextUrl.pathname)) {
+    const { userId } = getAuth(req);
+
+    if (!userId) {
+      // redirect the users to /pages/sign-in/[[...index]].ts
+
+      const signInUrl = new URL("/sign-in", req.url);
+      signInUrl.searchParams.set("redirect_url", req.url);
+      return NextResponse.redirect(signInUrl);
+    }
     return NextResponse.next();
-  }
-  // if the user is not signed in redirect them to the sign in page.
-  const { userId } = getAuth(req);
-
-  if (!userId) {
-    // redirect the users to /pages/sign-in/[[...index]].ts
-
-    const signInUrl = new URL("/sign-in", req.url);
-    signInUrl.searchParams.set("redirect_url", req.url);
-    return NextResponse.redirect(signInUrl);
-  }
-  return NextResponse.next();
+  } else return NextResponse.next();
 });
 
 // Stop Middleware running on static files
