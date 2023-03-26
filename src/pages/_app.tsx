@@ -4,13 +4,16 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 
-import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
+
+import { Toaster } from "react-hot-toast";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <>
+      <Toaster position="bottom-center" />
       <ClerkProvider {...pageProps}>
         <style jsx global>{`
           html {

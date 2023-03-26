@@ -22,6 +22,9 @@ export const Navbar = () => {
         {userLoaded ? (
           isSignedIn ? (
             <UserButton
+              userProfileMode="navigation"
+              userProfileUrl="/account/manage"
+              showName={false}
               appearance={{
                 baseTheme: dark,
                 elements: {
@@ -34,6 +37,12 @@ export const Navbar = () => {
                       boxShadow: "none",
                     },
                   },
+                  // userPreviewSecondaryIdentifier: {
+                  //   "&::before": {
+                  //     content: ['"@"'],
+                  //     display: "inline-block",
+                  //   },
+                  // },
                 },
               }}
             />
