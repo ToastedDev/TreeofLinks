@@ -3,16 +3,15 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 // import { useRouter } from "next/router";
+import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { MdNavigateNext } from "react-icons/md";
 import { LoadingPage } from "~/components/loading";
 import { Navbar } from "~/components/navbar";
-
-type Inputs = {
-  displayName: string;
-};
+import { api } from "~/utils/api";
+import { profile, type Profile } from "~/utils/profile";
 
 const Input = React.forwardRef<
   HTMLInputElement,
@@ -37,7 +36,13 @@ Input.displayName = "Input";
 
 const ManageAccount: NextPage = () => {
   const { isSignedIn, isLoaded: userLoaded, user } = useUser();
-  const { register, handleSubmit } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Profile>({
+    resolver: zodResolver(profile),
+  });
+  const { mutate, isLoading: isSubmitting } = api.profile.update.useMutation({
+    onSuccess: () => toast.success("Successfully updated your profile!"),
+    onError: () => toast.error("An error occured. Try again later."),
+  });
   // const router = useRouter();
 
   if (!userLoaded)
@@ -48,16 +53,6 @@ const ManageAccount: NextPage = () => {
       </main>
     );
   if (!isSignedIn) return null;
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const onSubmit: SubmitHandler<Inputs> = async ({ displayName }) => {
-    try {
-      await user.update({ firstName: displayName });
-      toast.success("Successfully updated your profile!");
-    } catch {
-      toast.error("An error occured. Try again later.");
-    }
-  };
 
   return (
     <>
@@ -70,7 +65,7 @@ const ManageAccount: NextPage = () => {
         <Navbar />
         <form
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit((data) => mutate(data))}
           noValidate
           className="items-flex flex flex-col items-center justify-center p-4"
         >
@@ -91,7 +86,8 @@ const ManageAccount: NextPage = () => {
           </div>
           <button
             type="submit"
-            className="mt-6 rounded-lg bg-green-600 px-3 py-1 text-sm hover:bg-green-700"
+            className="mt-6 rounded-lg bg-green-600 px-3 py-1 text-sm hover:bg-green-700 disabled:opacity-50"
+            disabled={isSubmitting}
           >
             Submit
           </button>
