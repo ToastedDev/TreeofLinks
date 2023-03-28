@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
+import { FiSave } from "react-icons/fi";
 import { MdNavigateNext } from "react-icons/md";
 import { LoadingPage } from "~/components/loading";
 import { Navbar } from "~/components/navbar";
@@ -89,10 +90,10 @@ const ManageAccount: NextPage = () => {
           </div>
           <button
             type="submit"
-            className="mt-6 rounded-md bg-green-600 px-3 py-2 text-sm hover:bg-green-700 disabled:opacity-50"
+            className="mt-6 flex items-center gap-1 rounded-md bg-green-600 px-3 py-2 text-sm hover:bg-green-700 disabled:opacity-50"
             disabled={isSubmitting}
           >
-            Submit
+            Save <FiSave />
           </button>
         </form>
       </main>
