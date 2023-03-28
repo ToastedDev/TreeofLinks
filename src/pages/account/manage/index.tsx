@@ -79,14 +79,17 @@ const ManageAccount: NextPage = () => {
             </label>
             <Link
               href="/account/manage/other"
-              className="transition-colros flex items-center duration-100 hover:text-green-500"
+              className="group flex items-center hover:text-green-500"
             >
-              Change other settings <MdNavigateNext />
+              <span className="group-hover:underline">
+                Change other settings{" "}
+              </span>{" "}
+              <MdNavigateNext className="mt-[3px] group-hover:border-b-[1.3px] group-hover:border-green-500" />
             </Link>
           </div>
           <button
             type="submit"
-            className="mt-6 rounded-lg bg-green-600 px-3 py-1 text-sm hover:bg-green-700 disabled:opacity-50"
+            className="mt-6 rounded-md bg-green-600 px-3 py-2 text-sm hover:bg-green-700 disabled:opacity-50"
             disabled={isSubmitting}
           >
             Submit
