@@ -1,20 +1,20 @@
 import { RedirectToSignIn } from "@clerk/nextjs";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { LoadingPage } from "~/components/loading";
-import { Navbar } from "~/components/navbar";
+import { Redirect } from "~/components/redirect";
 
-const Redirect: NextPage = () => {
+const RedirectPage: NextPage = () => {
   const router = useRouter();
   const { redirect_url } = router.query;
   if (typeof redirect_url !== "string") return null;
 
   return (
-    <main>
-      <Navbar />
-      <LoadingPage />
-      <RedirectToSignIn afterSignInUrl={redirect_url} />
-    </main>
+    <Redirect>
+      <RedirectToSignIn
+        afterSignInUrl={redirect_url}
+        afterSignUpUrl={redirect_url}
+      />
+    </Redirect>
   );
 };
-export default Redirect;
+export default RedirectPage;

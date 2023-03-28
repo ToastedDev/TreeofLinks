@@ -1,13 +1,10 @@
 import { RedirectToUserProfile } from "@clerk/nextjs";
 import type { NextPage } from "next";
-import { LoadingPage } from "~/components/loading";
-import { Navbar } from "~/components/navbar";
+import { Redirect } from "~/components/redirect";
 
-const Redirect: NextPage = () => (
-  <main>
-    <Navbar />
-    <LoadingPage />
+const RedirectPage: NextPage = () => (
+  <Redirect>
     <RedirectToUserProfile />
-  </main>
+  </Redirect>
 );
-export default Redirect;
+export default RedirectPage;
