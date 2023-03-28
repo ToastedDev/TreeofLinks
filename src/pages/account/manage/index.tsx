@@ -53,7 +53,7 @@ const TextArea = React.forwardRef<
     <textarea
       {...props}
       ref={ref}
-      className="mt-1 block w-full rounded-md bg-green-800/50 px-3 py-2 outline-none outline-offset-0 focus-visible:outline-green-500"
+      className="mt-1 block w-full rounded-md border-none bg-green-800/50 px-3 py-2 outline-none focus:outline-offset-0 focus:outline-green-500 focus:ring-0"
     />
   );
 });
@@ -107,10 +107,7 @@ const ManageAccount: NextPage = () => {
               <TextArea
                 {...register("aboutMe")}
                 rows={5}
-                defaultValue={
-                  (user.publicMetadata.aboutMe as string | null | undefined) ??
-                  ""
-                }
+                defaultValue={user.publicMetadata.aboutMe ?? ""}
               />
             </label>
             <Link
