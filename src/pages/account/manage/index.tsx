@@ -5,7 +5,7 @@ import Link from "next/link";
 // import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { MdNavigateNext } from "react-icons/md";
 import { LoadingPage } from "~/components/loading";
