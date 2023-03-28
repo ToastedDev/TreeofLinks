@@ -12,7 +12,12 @@ import { MdNavigateNext } from "react-icons/md";
 import { LoadingPage } from "~/components/loading";
 import { Navbar } from "~/components/navbar";
 import { api } from "~/utils/api";
-import { profile, type Profile } from "~/utils/profile";
+import {
+  metadata,
+  profile,
+  type Metadata,
+  type Profile,
+} from "~/utils/profile";
 
 const Input = React.forwardRef<
   HTMLInputElement,
@@ -32,13 +37,32 @@ const Input = React.forwardRef<
     />
   );
 });
-
 Input.displayName = "Input";
+
+const TextArea = React.forwardRef<
+  HTMLTextAreaElement,
+  {
+    errorText?: string;
+    onPaste?: React.ClipboardEventHandler<HTMLInputElement>;
+    autoFocus?: boolean;
+    type?: string;
+    badge?: React.ReactNode | string;
+  } & React.TextareaHTMLAttributes<HTMLTextAreaElement>
+>((props, ref) => {
+  return (
+    <textarea
+      {...props}
+      ref={ref}
+      className="mt-1 block w-full rounded-md bg-green-800/50 px-3 py-2 outline-none outline-offset-0 focus-visible:outline-green-500"
+    />
+  );
+});
+TextArea.displayName = "TextArea";
 
 const ManageAccount: NextPage = () => {
   const { isSignedIn, isLoaded: userLoaded, user } = useUser();
-  const { register, handleSubmit } = useForm<Profile>({
-    resolver: zodResolver(profile),
+  const { register, handleSubmit } = useForm<Profile & Metadata>({
+    resolver: zodResolver(profile.merge(metadata)),
   });
   const { mutate, isLoading: isSubmitting } = api.profile.update.useMutation({
     onSuccess: () => toast.success("Successfully updated your profile!"),
@@ -76,6 +100,17 @@ const ManageAccount: NextPage = () => {
               <Input
                 {...register("displayName")}
                 defaultValue={user.firstName ?? ""}
+              />
+            </label>
+            <label className="block">
+              <span className="text-xs">About me</span>
+              <TextArea
+                {...register("aboutMe")}
+                rows={5}
+                defaultValue={
+                  (user.publicMetadata.aboutMe as string | null | undefined) ??
+                  ""
+                }
               />
             </label>
             <Link
