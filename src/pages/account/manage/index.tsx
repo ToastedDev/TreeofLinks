@@ -103,6 +103,13 @@ const ManageAccount: NextPage = () => {
               />
             </label>
             <label className="block">
+              <span className="text-xs">Username</span>
+              <Input
+                {...register("username")}
+                defaultValue={user.username ?? ""}
+              />
+            </label>
+            <label className="block">
               <span className="text-xs">About me</span>
               <TextArea
                 {...register("aboutMe")}
