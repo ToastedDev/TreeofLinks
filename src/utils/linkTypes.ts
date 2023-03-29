@@ -1,5 +1,5 @@
 import type { IconType } from "react-icons";
-import { FaDiscord, FaGithub } from "react-icons/fa";
+import { FaDiscord, FaGithub, FaTwitch } from "react-icons/fa";
 import type { FilteredExternalAccount } from "~/server/helpers/filterUserForClient";
 
 type LinkTypes = {
@@ -29,4 +29,11 @@ export const linkTypes: LinkTypes[] = [
     linkable: true,
     website: "https://github.com",
   },
+  {
+    provider: "oauth_twitch",
+    name: "Twitch",
+    icon: FaTwitch,
+    linkable: true,
+    website: "https://twitch.tv"
+  }
 ];
