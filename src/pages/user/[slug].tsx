@@ -43,7 +43,7 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
             const linkType = linkTypes.find(
               (x) => x.provider === account.provider
             );
-            if (!linkType || !linkType.renderUsername) return account;
+            if (!linkType || linkType.linkable) return account;
             else
               return {
                 ...account,
