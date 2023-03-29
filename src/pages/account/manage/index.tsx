@@ -113,7 +113,7 @@ const ManageAccount: NextPage = () => {
               <span className="group-hover:underline">
                 Change other settings{" "}
               </span>{" "}
-              <MdNavigateNext className="mt-[3px] group-hover:border-b-[1.3px] group-hover:border-green-500" />
+              <MdNavigateNext className="mt-[3px] group-hover:border-b-[1.5px] group-hover:border-green-500" />
             </Link>
           </div>
           <button
