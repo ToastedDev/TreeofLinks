@@ -6,8 +6,15 @@ type LinkTypes = {
   provider?: string;
   name: string;
   icon: IconType;
-  renderUsername?: (data: FilteredExternalAccount) => string | Promise<string>;
-} & ({ linkable: false } | { linkable: true; website: string });
+} & (
+  | {
+      linkable: false;
+      renderUsername: (
+        data: FilteredExternalAccount
+      ) => string | Promise<string>;
+    }
+  | { linkable: true; website: string }
+);
 
 export const linkTypes: LinkTypes[] = [
   {
@@ -34,6 +41,6 @@ export const linkTypes: LinkTypes[] = [
     name: "Twitch",
     icon: FaTwitch,
     linkable: true,
-    website: "https://twitch.tv"
-  }
+    website: "https://twitch.tv",
+  },
 ];
