@@ -91,7 +91,10 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
               </div>
             </div>
             <Section icon={FaUser} title="About Me">
-              <p>{user.publicMetadata.aboutMe}</p>
+              <p>
+                {user.publicMetadata.aboutMe ||
+                  "Just your average TreeofLinks user."}
+              </p>
             </Section>
 
             <Section icon={FaLink} title="Links">
