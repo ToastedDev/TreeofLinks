@@ -80,7 +80,7 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
             <div className="flex items-center gap-3">
               <Image
                 src={user.profileImageUrl}
-                alt={`${user.firstName as string} profile picture`}
+                alt={`${user.firstName || user.username || ""} profile picture`}
                 width={100}
                 height={100}
                 className="rounded-full"
