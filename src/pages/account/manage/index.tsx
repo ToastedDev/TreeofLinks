@@ -12,12 +12,7 @@ import { MdNavigateNext } from "react-icons/md";
 import { LoadingPage } from "~/components/loading";
 import { Navbar } from "~/components/navbar";
 import { api } from "~/utils/api";
-import {
-  metadata,
-  profile,
-  type Metadata,
-  type Profile,
-} from "~/utils/profile";
+import { metadata, profile, type ProfileWithMetadata } from "~/utils/profile";
 
 const Input = React.forwardRef<
   HTMLInputElement,
@@ -61,7 +56,7 @@ TextArea.displayName = "TextArea";
 
 const ManageAccount: NextPage = () => {
   const { isSignedIn, isLoaded: userLoaded, user } = useUser();
-  const { register, handleSubmit } = useForm<Profile & Metadata>({
+  const { register, handleSubmit } = useForm<ProfileWithMetadata>({
     resolver: zodResolver(profile.merge(metadata)),
   });
   const { mutate, isLoading: isSubmitting } = api.profile.update.useMutation({

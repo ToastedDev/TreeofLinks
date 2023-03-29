@@ -10,3 +10,6 @@ export const metadata = z.object({
   aboutMe: z.string().optional(),
 });
 export type Metadata = z.infer<typeof metadata>;
+
+const profileWithMetadata = profile.merge(metadata);
+export type ProfileWithMetadata = z.infer<typeof profileWithMetadata>;
