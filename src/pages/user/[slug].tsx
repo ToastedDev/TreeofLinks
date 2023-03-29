@@ -1,11 +1,13 @@
 import type { User } from "@clerk/nextjs/dist/api";
 import { clerkClient } from "@clerk/nextjs/server";
 import type { GetStaticProps, NextPage } from "next";
+import { NextSeo } from "next-seo";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, type PropsWithChildren } from "react";
 import { type IconType } from "react-icons";
 import { FaLink, FaUser } from "react-icons/fa";
+import { LoadingPage } from "~/components/loading";
 import { Navbar } from "~/components/navbar";
 import {
   filterUserForClient,
@@ -57,8 +59,20 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
     }
   }, [user, externalAccounts]);
 
+  if (!externalAccounts)
+    return (
+      <>
+        <NextSeo title={user.firstName || user.username || ""} />
+        <main>
+          <Navbar />
+          <LoadingPage />
+        </main>
+      </>
+    );
+
   return (
     <>
+      <NextSeo title={user.firstName || user.username || ""} />
       <main>
         <Navbar />
         <div className="flex flex-col items-center justify-center p-4">
