@@ -20,7 +20,7 @@ export const Navbar = () => {
       </nav>
       <div className="pr-2">
         {userLoaded ? (
-          !isSignedIn ? (
+          isSignedIn ? (
             <UserButton
               userProfileMode="navigation"
               userProfileUrl="/account/manage"
