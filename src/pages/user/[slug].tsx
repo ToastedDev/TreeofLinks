@@ -13,6 +13,7 @@ import {
   filterUserForClient,
   type FilteredExternalAccount,
 } from "~/server/helpers/filterUserForClient";
+import { badges } from "~/utils/badges";
 import { linkTypes } from "~/utils/linkTypes";
 
 const Section = (
@@ -86,7 +87,31 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
                 className="rounded-full"
               ></Image>
               <div className="flex flex-col justify-start">
-                <h1 className="text-3xl font-bold">{user.firstName}</h1>
+                <h1
+                  className={`text-3xl font-bold ${
+                    user.publicMetadata.badges ? "flex items-center gap-2" : ""
+                  }`}
+                >
+                  {user.firstName}{" "}
+                  {user.publicMetadata.badges ? (
+                    <div className="flex items-center gap-2">
+                      {user.publicMetadata.badges?.map((badge) => {
+                        const badgeType = badges.find(
+                          (b) => b.name.toLowerCase() === badge.toLowerCase()
+                        );
+                        if (!badgeType) return null;
+
+                        return (
+                          <badgeType.icon
+                            key={badge}
+                            fill={badgeType.color}
+                            title={badgeType.title}
+                          />
+                        );
+                      })}
+                    </div>
+                  ) : null}
+                </h1>
                 <p className="text-sm">@{user.username}</p>
               </div>
             </div>

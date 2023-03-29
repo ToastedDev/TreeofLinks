@@ -8,6 +8,7 @@ export type Profile = z.infer<typeof profile>;
 
 export const metadata = z.object({
   aboutMe: z.string().optional(),
+  badges: z.enum(["owner", "verified"]).array().optional(),
 });
 export type Metadata = z.infer<typeof metadata>;
 
