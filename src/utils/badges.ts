@@ -1,5 +1,5 @@
 import type { IconType } from "react-icons";
-import { FaCheck, FaCrown } from "react-icons/fa";
+import { FaCheck, FaCode, FaCrown } from "react-icons/fa";
 import colors from "tailwindcss/colors";
 
 export type Badge = {
@@ -15,6 +15,12 @@ export const badges: Badge[] = [
     title: "Owner",
     color: colors.yellow[400],
     icon: FaCrown,
+  },
+  {
+    name: "developer",
+    title: "Developer",
+    color: colors.blue[500],
+    icon: FaCode,
   },
   {
     name: "verified",
