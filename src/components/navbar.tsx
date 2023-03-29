@@ -20,7 +20,7 @@ export const Navbar = () => {
       </nav>
       <div className="pr-2">
         {userLoaded ? (
-          isSignedIn ? (
+          !isSignedIn ? (
             <UserButton
               userProfileMode="navigation"
               userProfileUrl="/account/manage"
@@ -48,7 +48,7 @@ export const Navbar = () => {
             />
           ) : (
             <SignInButton>
-              <button className="rounded-lg bg-green-600 px-4 py-2 hover:bg-green-700">
+              <button className="rounded-md bg-green-600 px-4 py-2 hover:bg-green-700">
                 Sign in
               </button>
             </SignInButton>
