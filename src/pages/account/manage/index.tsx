@@ -81,7 +81,7 @@ const ManageAccount: NextPage = () => {
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onSubmit={handleSubmit((data) => mutate(data))}
           noValidate
-          className="items-flex flex flex-col items-center justify-center p-4"
+          className="flex flex-col items-center justify-center p-4"
         >
           <div className="grid w-full grid-cols-1 gap-6 md:max-w-lg">
             <label className="block">
