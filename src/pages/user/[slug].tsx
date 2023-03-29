@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, type PropsWithChildren } from "react";
 import { type IconType } from "react-icons";
-import { FaLink, FaUser } from "react-icons/fa";
+import { FaCheck, FaLink, FaUser } from "react-icons/fa";
 import { LoadingPage } from "~/components/loading";
 import { Navbar } from "~/components/navbar";
 import {
@@ -98,29 +98,41 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
             </Section>
 
             <Section icon={FaLink} title="Links">
-              {externalAccounts?.map(({ provider, username }) => {
-                const linkType = linkTypes.find((x) => x.provider === provider);
-                if (!linkType) return null;
+              <div className="grid gap-2">
+                {externalAccounts?.map(({ provider, username }) => {
+                  const linkType = linkTypes.find(
+                    (x) => x.provider === provider
+                  );
+                  if (!linkType) return null;
 
-                if (!linkType.linkable)
-                  return (
-                    <div key={provider} className="flex items-center gap-1.5">
-                      <linkType.icon />
-                      <p>{username}</p>
-                    </div>
-                  );
-                else
-                  return (
-                    <Link
-                      href={`${linkType.website}/${username as string}`}
-                      key={provider}
-                      className="flex items-center gap-1.5"
-                    >
-                      <linkType.icon />
-                      <p>{username}</p>
-                    </Link>
-                  );
-              })}
+                  if (!linkType.linkable)
+                    return (
+                      <div key={provider} className="flex items-center gap-1.5">
+                        <linkType.icon className="h-6 w-6" />
+                        <p>{username}</p>
+                        <FaCheck
+                          className="h-3 w-3 text-green-500"
+                          title="This user has linked this account to their profile."
+                        />
+                      </div>
+                    );
+                  else
+                    return (
+                      <Link
+                        href={`${linkType.website}/${username as string}`}
+                        key={provider}
+                        className="flex items-center gap-1.5"
+                      >
+                        <linkType.icon className="h-6 w-6" />
+                        <p>{username}</p>
+                        <FaCheck
+                          className="h-3 w-3 text-green-500"
+                          title="This user has linked this account to their profile."
+                        />
+                      </Link>
+                    );
+                })}
+              </div>
             </Section>
           </div>
         </div>
