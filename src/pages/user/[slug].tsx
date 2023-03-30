@@ -30,6 +30,8 @@ const Section = (
   );
 };
 
+export const dynamic = "force-dynamic";
+
 const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
   const user = filterUserForClient(JSON.parse(userUnparsed) as User);
   const [externalAccounts, setExternalAccounts] = useState<
@@ -42,9 +44,10 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
         await Promise.all(
           user.externalAccounts.map(async (account) => {
             const linkType = linkTypes.find(
-              (x) => x.provider === account.provider
+              (l) => l.oauth && l.provider === account.provider
             );
-            if (!linkType || linkType.linkable) return account;
+            if (!linkType || !linkType.oauth || !linkType.renderUsername)
+              return account;
             else
               return {
                 ...account,
@@ -126,9 +129,9 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
               <div className="grid gap-2">
                 {externalAccounts?.map(({ provider, username }) => {
                   const linkType = linkTypes.find(
-                    (x) => x.provider === provider
+                    (l) => l.oauth && l.provider === provider
                   );
-                  if (!linkType) return null;
+                  if (!linkType || !linkType.oauth) return null;
 
                   if (!linkType.linkable)
                     return (
@@ -154,6 +157,44 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
                           className="h-3 w-3 text-green-500"
                           title="This user has linked this account to their profile."
                         />
+                      </Link>
+                    );
+                })}
+                {user.publicMetadata.links?.map((link) => {
+                  const linkType = linkTypes.find((l) => {
+                    return l.regex && link.url.match(l.regex);
+                  });
+
+                  if (!linkType)
+                    return (
+                      <Link
+                        href={link.url}
+                        key={link.name}
+                        className="flex items-center gap-1.5"
+                      >
+                        <FaLink className="h-6 w-6" />
+                        <p>{link.name}</p>
+                      </Link>
+                    );
+                  else
+                    return (
+                      <Link
+                        href={link.url}
+                        key={link.name}
+                        className="flex items-center gap-1.5"
+                      >
+                        <linkType.icon className="h-6 w-6" />
+                        <p>
+                          {(!linkType.oauth
+                            ? linkType.renderUsername?.(link)
+                            : undefined) ||
+                            (linkType.removeUrl || linkType.regex
+                              ? link.url.replace(
+                                  linkType.removeUrl || linkType.regex || "",
+                                  ""
+                                )
+                              : link.name)}
+                        </p>
                       </Link>
                     );
                 })}
