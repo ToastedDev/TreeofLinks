@@ -1,10 +1,11 @@
 import type { User } from "@clerk/nextjs/dist/api";
 import { clerkClient } from "@clerk/nextjs/server";
-import type { GetStaticProps, NextPage } from "next";
+import Markdown from "markdown-to-jsx";
+import type { GetServerSideProps, NextPage } from "next";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState, type PropsWithChildren } from "react";
+import NextLink from "next/link";
+import React, { useEffect, useState, type PropsWithChildren } from "react";
 import { type IconType } from "react-icons";
 import { FaCheck, FaLink, FaUser } from "react-icons/fa";
 import { LoadingPage } from "~/components/loading";
@@ -30,7 +31,18 @@ const Section = (
   );
 };
 
-export const dynamic = "force-dynamic";
+const Link = ({
+  children,
+  ...props
+}: PropsWithChildren<
+  React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }
+>) => {
+  return (
+    <NextLink {...props} className="text-green-500 hover:underline">
+      {children}
+    </NextLink>
+  );
+};
 
 const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
   const user = filterUserForClient(JSON.parse(userUnparsed) as User);
@@ -95,9 +107,10 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
                     user.publicMetadata.badges ? "flex items-center gap-2" : ""
                   }`}
                 >
-                  {user.firstName}{" "}
+                  {user.firstName}
                   {user.publicMetadata.badges ? (
                     <div className="flex items-center gap-2">
+                      {" "}
                       {user.publicMetadata.badges?.map((badge) => {
                         const badgeType = badges.find(
                           (b) => b.name.toLowerCase() === badge.toLowerCase()
@@ -119,10 +132,17 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
               </div>
             </div>
             <Section icon={FaUser} title="About Me">
-              <p>
-                {user.publicMetadata.aboutMe ||
-                  "Just your average TreeofLinks user."}
-              </p>
+              <div className="prose max-w-none text-slate-100">
+                <Markdown>
+                  {`${
+                    user.publicMetadata.aboutMe ||
+                    "Just your average TreeofLinks user."
+                  }`.replace(
+                    /@([a-zA-Z0-9_])*/g,
+                    (str) => `[${str}](/user/${str})`
+                  )}
+                </Markdown>
+              </div>
             </Section>
 
             <Section icon={FaLink} title="Links">
@@ -146,7 +166,7 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
                     );
                   else
                     return (
-                      <Link
+                      <NextLink
                         href={`${linkType.website}/${username as string}`}
                         key={provider}
                         className="flex items-center gap-1.5"
@@ -157,7 +177,7 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
                           className="h-3 w-3 text-green-500"
                           title="This user has linked this account to their profile."
                         />
-                      </Link>
+                      </NextLink>
                     );
                 })}
                 {user.publicMetadata.links?.map((link) => {
@@ -167,18 +187,18 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
 
                   if (!linkType)
                     return (
-                      <Link
+                      <NextLink
                         href={link.url}
                         key={link.name}
                         className="flex items-center gap-1.5"
                       >
                         <FaLink className="h-6 w-6" />
                         <p>{link.name}</p>
-                      </Link>
+                      </NextLink>
                     );
                   else
                     return (
-                      <Link
+                      <NextLink
                         href={link.url}
                         key={link.name}
                         className="flex items-center gap-1.5"
@@ -195,7 +215,7 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
                                 )
                               : link.name)}
                         </p>
-                      </Link>
+                      </NextLink>
                     );
                 })}
               </div>
@@ -207,7 +227,7 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const slug = context.params?.slug;
   if (typeof slug !== "string") throw new Error("no slug");
 
@@ -226,13 +246,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
     props: {
       user: JSON.stringify(users[0]),
     },
-  };
-};
-
-export const getStaticPaths = () => {
-  return {
-    paths: [],
-    fallback: "blocking",
   };
 };
 

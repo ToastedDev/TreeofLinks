@@ -5,3 +5,8 @@
 body {
   @apply bg-neutral-900 text-slate-100;
 }
+
+.prose :not(:where([class~="not-prose"] *)) {
+  margin: 0;
+  @apply prose-headings:text-slate-100 prose-a:text-green-500 prose-a:no-underline prose-a:hover:underline;
+}
