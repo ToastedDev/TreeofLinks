@@ -14,6 +14,10 @@ export const filterUserForClient = (user: User) => ({
   id: user.id,
   username: user.username,
   firstName: user.firstName,
+  fullName:
+    user.firstName !== null || user.lastName !== null
+      ? `${user.firstName || ""} ${user.lastName || ""}`
+      : null,
   profileImageUrl: user.profileImageUrl,
   publicMetadata: user.publicMetadata,
   externalAccounts: user.externalAccounts.map(filterExternalAccountsForClient),

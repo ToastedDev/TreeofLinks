@@ -65,7 +65,7 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
   if (!externalAccounts)
     return (
       <>
-        <NextSeo title={user.firstName || user.username || ""} />
+        <NextSeo title={user.fullName || user.username || ""} />
         <main>
           <Navbar />
           <LoadingPage />
@@ -75,7 +75,7 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
 
   return (
     <>
-      <NextSeo title={user.firstName || user.username || ""} />
+      <NextSeo title={user.fullName || user.username || ""} />
       <main>
         <Navbar />
         <div className="flex flex-col items-center justify-center p-4">
@@ -83,7 +83,7 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
             <div className="flex items-center gap-3">
               <Image
                 src={user.profileImageUrl}
-                alt={`${user.firstName || user.username || ""} profile picture`}
+                alt={`${user.fullName || user.username || ""} profile picture`}
                 width={100}
                 height={100}
                 className="rounded-full"
@@ -94,7 +94,7 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
                     user.publicMetadata.badges ? "flex items-center gap-2" : ""
                   }`}
                 >
-                  {user.firstName}
+                  {user.fullName}
                   {user.publicMetadata.badges ? (
                     <div className="flex items-center gap-2">
                       {" "}
