@@ -2,7 +2,7 @@ import { getAuth, withClerkMiddleware } from "@clerk/nextjs/server";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-const privatePaths = ["/user/me", "/account/*"];
+const privatePaths = ["/user/me", "/account*"];
 
 const isPrivate = (path: string) => {
   return privatePaths.find((x) =>

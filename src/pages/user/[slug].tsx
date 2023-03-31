@@ -4,7 +4,7 @@ import Markdown from "markdown-to-jsx";
 import type { GetServerSideProps, NextPage } from "next";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
-import NextLink from "next/link";
+import Link from "next/link";
 import React, { useEffect, useState, type PropsWithChildren } from "react";
 import { type IconType } from "react-icons";
 import { FaCheck, FaLink, FaUser } from "react-icons/fa";
@@ -28,19 +28,6 @@ const Section = (
       </span>
       {props.children}
     </div>
-  );
-};
-
-const Link = ({
-  children,
-  ...props
-}: PropsWithChildren<
-  React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }
->) => {
-  return (
-    <NextLink {...props} className="text-green-500 hover:underline">
-      {children}
-    </NextLink>
   );
 };
 
@@ -145,81 +132,86 @@ const UserPage: NextPage<{ user: string }> = ({ user: userUnparsed }) => {
               </div>
             </Section>
 
-            <Section icon={FaLink} title="Links">
-              <div className="grid gap-2">
-                {externalAccounts?.map(({ provider, username }) => {
-                  const linkType = linkTypes.find(
-                    (l) => l.oauth && l.provider === provider
-                  );
-                  if (!linkType || !linkType.oauth) return null;
+            {(externalAccounts.length || user.publicMetadata.links) && (
+              <Section icon={FaLink} title="Links">
+                <div className="grid gap-2">
+                  {externalAccounts?.map(({ provider, username }) => {
+                    const linkType = linkTypes.find(
+                      (l) => l.oauth && l.provider === provider
+                    );
+                    if (!linkType || !linkType.oauth) return null;
 
-                  if (!linkType.linkable)
-                    return (
-                      <div key={provider} className="flex items-center gap-1.5">
-                        <linkType.icon className="h-6 w-6" />
-                        <p>{username}</p>
-                        <FaCheck
-                          className="h-3 w-3 text-green-500"
-                          title="This user has linked this account to their profile."
-                        />
-                      </div>
-                    );
-                  else
-                    return (
-                      <NextLink
-                        href={`${linkType.website}/${username as string}`}
-                        key={provider}
-                        className="flex items-center gap-1.5"
-                      >
-                        <linkType.icon className="h-6 w-6" />
-                        <p>{username}</p>
-                        <FaCheck
-                          className="h-3 w-3 text-green-500"
-                          title="This user has linked this account to their profile."
-                        />
-                      </NextLink>
-                    );
-                })}
-                {user.publicMetadata.links?.map((link) => {
-                  const linkType = linkTypes.find((l) => {
-                    return l.regex && link.url.match(l.regex);
-                  });
+                    if (!linkType.linkable)
+                      return (
+                        <div
+                          key={provider}
+                          className="flex items-center gap-1.5"
+                        >
+                          <linkType.icon className="h-6 w-6" />
+                          <p>{username}</p>
+                          <FaCheck
+                            className="h-3 w-3 text-green-500"
+                            title="This user has linked this account to their profile."
+                          />
+                        </div>
+                      );
+                    else
+                      return (
+                        <Link
+                          href={`${linkType.website}/${username as string}`}
+                          key={provider}
+                          className="flex items-center gap-1.5"
+                        >
+                          <linkType.icon className="h-6 w-6" />
+                          <p>{username}</p>
+                          <FaCheck
+                            className="h-3 w-3 text-green-500"
+                            title="This user has linked this account to their profile."
+                          />
+                        </Link>
+                      );
+                  })}
+                  {user.publicMetadata.links?.map((link) => {
+                    const linkType = linkTypes.find((l) => {
+                      return l.regex && link.url.match(l.regex);
+                    });
 
-                  if (!linkType)
-                    return (
-                      <NextLink
-                        href={link.url}
-                        key={link.name}
-                        className="flex items-center gap-1.5"
-                      >
-                        <FaLink className="h-6 w-6" />
-                        <p>{link.name}</p>
-                      </NextLink>
-                    );
-                  else
-                    return (
-                      <NextLink
-                        href={link.url}
-                        key={link.name}
-                        className="flex items-center gap-1.5"
-                      >
-                        <linkType.icon className="h-6 w-6" />
-                        <p>
-                          {(!linkType.oauth
-                            ? linkType.renderUsername?.(link)
-                            : undefined) ||
-                            (linkType.removeUrl || linkType.regex
-                              ? link.url.replace(
-                                  linkType.removeUrl || linkType.regex || "",
-                                  ""
-                                )
-                              : link.name)}
-                        </p>
-                      </NextLink>
-                    );
-                })}
-              </div>
-            </Section>
+                    if (!linkType)
+                      return (
+                        <Link
+                          href={link.url}
+                          key={link.name}
+                          className="flex items-center gap-1.5"
+                        >
+                          <FaLink className="h-6 w-6" />
+                          <p>{link.name}</p>
+                        </Link>
+                      );
+                    else
+                      return (
+                        <Link
+                          href={link.url}
+                          key={link.name}
+                          className="flex items-center gap-1.5"
+                        >
+                          <linkType.icon className="h-6 w-6" />
+                          <p>
+                            {(!linkType.oauth
+                              ? linkType.renderUsername?.(link)
+                              : undefined) ||
+                              (linkType.removeUrl || linkType.regex
+                                ? link.url.replace(
+                                    linkType.removeUrl || linkType.regex || "",
+                                    ""
+                                  )
+                                : link.name)}
+                          </p>
+                        </Link>
+                      );
+                  })}
+                </div>
+              </Section>
+            )}
           </div>
         </div>
       </main>
