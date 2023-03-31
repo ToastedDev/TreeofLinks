@@ -37,12 +37,11 @@ export const Navbar = () => {
                       boxShadow: "none",
                     },
                   },
-                  // userPreviewSecondaryIdentifier: {
-                  //   "&::before": {
-                  //     content: ['"@"'],
-                  //     display: "inline-block",
-                  //   },
-                  // },
+                  userPreviewSecondaryIdentifier: {
+                    "&::before": {
+                      content: ['"@"'],
+                    },
+                  },
                 },
               }}
             />
