@@ -8,5 +8,9 @@ body {
 
 .prose :not(:where([class~="not-prose"] *)) {
   margin: 0;
-  @apply prose-headings:text-slate-100 prose-a:text-green-500 prose-a:no-underline prose-a:hover:underline;
+  @apply prose-headings:text-slate-100;
+}
+
+.prose :where(a):not(:where([class~="not-prose"] *)) {
+  @apply text-green-500 no-underline hover:underline;
 }
