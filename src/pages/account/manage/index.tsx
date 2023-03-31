@@ -151,15 +151,26 @@ const ManageAccount: NextPage = () => {
                 <AiOutlinePlus /> Add link
               </button>
             </div>
-            <Link
-              href="/account/manage/other"
-              className="group flex items-center hover:text-green-500"
-            >
-              <span className="group-hover:underline">
-                Change other settings{" "}
-              </span>{" "}
-              <MdNavigateNext className="mt-[3px] group-hover:border-b-[1.5px] group-hover:border-green-500" />
-            </Link>
+            <div className="flex flex-col gap-1.5">
+              <Link
+                href="/account/manage/other"
+                className="group flex items-center hover:text-green-500"
+              >
+                <span className="group-hover:underline">
+                  Change other settings{" "}
+                </span>{" "}
+                <MdNavigateNext className="mt-[3.5px] group-hover:border-b-[1.5px] group-hover:border-green-500" />
+              </Link>
+              <Link
+                href="/user/me"
+                className="group flex items-center hover:text-green-500"
+              >
+                <span className="group-hover:underline">
+                  View your profile{" "}
+                </span>{" "}
+                <MdNavigateNext className="mt-[3.5px] group-hover:border-b-[1.5px] group-hover:border-green-500" />
+              </Link>
+            </div>
           </div>
           <button
             type="submit"
