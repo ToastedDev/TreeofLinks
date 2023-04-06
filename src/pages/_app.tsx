@@ -6,6 +6,7 @@ import "~/styles/globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
+import { Provider as BalancerProvider } from "react-wrap-balancer";
 const inter = Inter({ subsets: ["latin"] });
 
 import { DefaultSeo } from "next-seo";
@@ -23,7 +24,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
             font-family: ${inter.style.fontFamily}, "sans-serif";
           }
         `}</style>
-        <Component {...pageProps} />
+        <BalancerProvider>
+          <Component {...pageProps} />
+        </BalancerProvider>
       </ClerkProvider>
     </>
   );
