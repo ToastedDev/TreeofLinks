@@ -5,8 +5,12 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 
 import { ClerkProvider } from "@clerk/nextjs";
-import { Inter } from "next/font/google";
 import { Provider as BalancerProvider } from "react-wrap-balancer";
+
+import { dark } from "@clerk/themes";
+import colors from "tailwindcss/colors";
+
+import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 import { DefaultSeo } from "next-seo";
@@ -18,7 +22,15 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <>
       <Toaster position="bottom-center" />
       <DefaultSeo {...nextSeoConfig} />
-      <ClerkProvider {...pageProps}>
+      <ClerkProvider
+        {...pageProps}
+        appearance={{
+          baseTheme: dark,
+          variables: {
+            colorPrimary: colors.green[500],
+          },
+        }}
+      >
         <style jsx global>{`
           html {
             font-family: ${inter.style.fontFamily}, "sans-serif";
